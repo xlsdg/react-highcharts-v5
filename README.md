@@ -5,7 +5,7 @@
 ## Installation
 
 ```bash
-    $ npm install --save highcharts react-highcharts-v5
+$ npm install --save highcharts react-highcharts-v5
 ```
 
 ## Usage
@@ -42,74 +42,74 @@
 1. Import HighCharts
 
     ```javascript
-      import IHighCharts from 'react-highcharts-v5/src/HighCharts.js';
+    import IHighCharts from 'react-highcharts-v5/src/HighCharts.js';
 
-      const options = {};
+    const options = {};
 
-      return (
-        <IHighCharts
-          options={options}
-        />
-      );
+    return (
+      <IHighCharts
+        options={options}
+      />
+    );
     ```
 
 2. Import HighMaps
 
     ```javascript
-      import IHighCharts from 'react-highcharts-v5/src/HighMaps.js';
+    import IHighCharts from 'react-highcharts-v5/src/HighMaps.js';
 
-      const options = {};
+    const options = {};
 
-      return (
-        <IHighCharts
-          options={options}
-        />
-      );
+    return (
+      <IHighCharts
+        options={options}
+      />
+    );
     ```
 
 3. Import HighStock
 
     ```javascript
-      import IHighCharts from 'react-highcharts-v5/src/HighStock.js';
+    import IHighCharts from 'react-highcharts-v5/src/HighStock.js';
 
-      const options = {};
+    const options = {};
 
-      return (
-        <IHighCharts
-          options={options}
-        />
-      );
+    return (
+      <IHighCharts
+        options={options}
+      />
+    );
     ```
 
 ## propTypes
 
 ```javascript
-    className: PropTypes.string,
-    style: PropTypes.object,
-    loading: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool
-    ]),
-    theme: PropTypes.object,
-    resizable: PropTypes.bool,
-    options: PropTypes.object.isRequired,
-    onLoad: PropTypes.func,
-    onResize: PropTypes.func
+className: PropTypes.string,
+style: PropTypes.object,
+loading: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.bool
+]),
+theme: PropTypes.object,
+resizable: PropTypes.bool,
+options: PropTypes.object.isRequired,
+onLoad: PropTypes.func,
+onResize: PropTypes.func
 ```
 
 ## defaultProps
 
 ```javascript
-    className: 'react-highcharts',
-    style: {
-        width: '100%',
-        height: '100%'
-    },
-    loading: false,
-    theme: null,
-    resizable: false,
-    onLoad: () => {},
-    onResize: (w, h) => {}
+className: 'react-highcharts',
+style: {
+    width: '100%',
+    height: '100%'
+},
+loading: false,
+theme: null,
+resizable: false,
+onLoad: () => {},
+onResize: (w, h) => {}
 ```
 
 ## Demo
