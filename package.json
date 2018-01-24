@@ -1,6 +1,6 @@
 {
   "name": "react-highcharts-v5",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React.js(v16.x+) component wrap for HighCharts.js(v6.x+)",
   "keywords": [
     "highcharts",
