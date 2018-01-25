@@ -69,24 +69,7 @@ function wrapHighCharts(name, HighCharts) {
     componentWillUnmount() {
       const that = this;
       // console.log('componentWillUnmount', that.props, that.state);
-      const {
-        chart,
-        resize,
-        fnResize
-      } = that.state;
-
-      if (resize && _.isFunction(resize.uninstall)) {
-        const dom = ReactDOM.findDOMNode(that);
-        resize.uninstall(dom);
-      }
-
-      if (fnResize && _.isFUnction(fnResize.cancel)) {
-        fnResize.cancel();
-      }
-
-      if (chart && _.isFUnction(chart.destroy)) {
-        chart.destroy();
-      }
+      that.uninit();
     }
 
     loading = (chart, ing) => {
@@ -159,6 +142,28 @@ function wrapHighCharts(name, HighCharts) {
         chart: _chart,
         resize: _resize
       });
+    }
+
+    uninit = () => {
+      const that = this;
+      const {
+        chart,
+        fnResize,
+        resize
+      } = that.state;
+
+      if (resize && _.isFunction(resize.uninstall)) {
+        const dom = ReactDOM.findDOMNode(that);
+        resize.uninstall(dom);
+      }
+
+      if (fnResize && _.isFUnction(fnResize.cancel)) {
+        fnResize.cancel();
+      }
+
+      if (chart && _.isFUnction(chart.destroy)) {
+        chart.destroy();
+      }
     }
 
     resize = (opts) => {
