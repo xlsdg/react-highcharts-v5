@@ -50,7 +50,7 @@ function wrapHighCharts(name, HighCharts) {
         return;
       }
 
-      that.loading(chart, nextProps.loading);
+      that.setLoading(chart, nextProps.loading);
     }
     // shouldComponentUpdate(nextProps, nextState) {
     //   const that = this;
@@ -72,7 +72,7 @@ function wrapHighCharts(name, HighCharts) {
       that.uninit();
     }
 
-    loading = (chart, ing) => {
+    setLoading = (chart, ing) => {
       if (ing === true) {
         chart.showLoading();
       } else if (_.isString(ing)) {
@@ -104,7 +104,7 @@ function wrapHighCharts(name, HighCharts) {
       const dom = ReactDOM.findDOMNode(that);
 
       if (_.isPlainObject(theme)) {
-        Highcharts.setOptions(theme);
+        HighCharts.setOptions(theme);
       }
 
       const method = INIT_METHOD[name];
@@ -114,7 +114,7 @@ function wrapHighCharts(name, HighCharts) {
         }
       });
 
-      that.loading(_chart, loading);
+      that.setLoading(_chart, loading);
 
       if (resize && _.isFunction(resize.uninstall)) {
         resize.uninstall(dom);
