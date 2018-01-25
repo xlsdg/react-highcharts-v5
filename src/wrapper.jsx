@@ -108,9 +108,9 @@ function wrapHighCharts(name, HighCharts) {
       }
 
       const method = INIT_METHOD[name];
-      const _chart = HighCharts[method](dom, options, (...args) => {
+      const _chart = HighCharts[method](dom, options, () => {
         if (_.isFunction(onLoad)) {
-          onLoad(_chart, HighCharts, ...args);
+          setTimeout(() => onLoad(_chart, HighCharts));
         }
       });
 
