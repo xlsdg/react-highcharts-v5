@@ -157,11 +157,11 @@ function wrapHighCharts(name, HighCharts) {
         resize.uninstall(dom);
       }
 
-      if (fnResize && _.isFUnction(fnResize.cancel)) {
+      if (fnResize && _.isFunction(fnResize.cancel)) {
         fnResize.cancel();
       }
 
-      if (chart && _.isFUnction(chart.destroy)) {
+      if (chart && _.isFunction(chart.destroy)) {
         chart.destroy();
       }
     }
