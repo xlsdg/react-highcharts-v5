@@ -44,7 +44,8 @@
   "peerDependencies": {
     "highcharts": "*",
     "prop-types": "*",
-    "react": "*"
+    "react": "*",
+    "react-dom": "*"
   },
   "title": "react-highcharts-v5"
 }

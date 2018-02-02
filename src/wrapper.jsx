@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import ElementResizeDetector from 'element-resize-detector';
 
@@ -21,7 +22,6 @@ function wrapHighCharts(name, HighCharts) {
       });
 
       this.state = {
-        dom: null,
         chart: null,
         fnResize,
         resize: null
@@ -92,15 +92,16 @@ function wrapHighCharts(name, HighCharts) {
         onLoad
       } = that.props;
       const {
-        dom,
         chart,
         resize,
         fnResize
       } = that.state;
 
-      if (!dom || chart) {
+      if (chart) {
         return;
       }
+
+      const dom = ReactDOM.findDOMNode(that);
 
       if (_.isPlainObject(theme)) {
         HighCharts.setOptions(theme);
@@ -146,13 +147,13 @@ function wrapHighCharts(name, HighCharts) {
     uninit = () => {
       const that = this;
       const {
-        dom,
         chart,
         fnResize,
         resize
       } = that.state;
 
-      if (resize && _.isFunction(resize.uninstall) && dom) {
+      if (resize && _.isFunction(resize.uninstall)) {
+        const dom = ReactDOM.findDOMNode(that);
         resize.uninstall(dom);
       }
 
@@ -214,15 +215,10 @@ function wrapHighCharts(name, HighCharts) {
         style
       } = that.props;
 
-      const ref = dom => that.setState({
-        dom
-      });
-
       return (
         <div
           className={className}
           style={style}
-          ref={ref}
         />
       );
     }
