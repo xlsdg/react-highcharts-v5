@@ -3339,7 +3339,9 @@
               return;
             }
 
-            var dom = ReactDOM.findDOMNode(that);
+            if (!that.dom) {
+              return;
+            }
 
             if (isPlainObject(theme)) {
               HighCharts$$1.setOptions(theme);
@@ -3347,7 +3349,7 @@
 
             var method = INIT_METHOD[name];
 
-            var _chart = HighCharts$$1[method](dom, options, function() {
+            var _chart = HighCharts$$1[method](that.dom, options, function() {
               if (isFunction(onLoad)) {
                 setTimeout(function() {
                   return onLoad(_chart, HighCharts$$1);
@@ -3358,7 +3360,7 @@
             that.setLoading(_chart, loading);
 
             if (resize && isFunction(resize.uninstall)) {
-              resize.uninstall(dom);
+              resize.uninstall(that.dom);
             }
 
             var _resize = null;
@@ -3368,7 +3370,7 @@
                 strategy: 'scroll', // <- For ultra performance.
               });
 
-              _resize.listenTo(dom, function(element) {
+              _resize.listenTo(that.dom, function(element) {
                 var width = element.offsetWidth;
                 var height = element.offsetHeight;
 
@@ -3396,8 +3398,7 @@
               resize = _that$state2.resize;
 
             if (resize && isFunction(resize.uninstall)) {
-              var dom = ReactDOM.findDOMNode(that);
-              resize.uninstall(dom);
+              resize.uninstall(that.dom);
             }
 
             if (fnResize && isFunction(fnResize.cancel)) {
@@ -3450,6 +3451,7 @@
             trailing: true,
           });
 
+          _this.dom = null;
           _this.state = {
             chart: null,
             fnResize: _fnResize,
@@ -3520,6 +3522,9 @@
               return React.createElement('div', {
                 className: className,
                 style: style,
+                ref: function ref(e) {
+                  that.dom = e;
+                },
               });
             },
           },

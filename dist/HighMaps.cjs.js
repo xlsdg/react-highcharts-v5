@@ -162,7 +162,9 @@ function wrapHighCharts(name, HighCharts$$1) {
             return;
           }
 
-          var dom = ReactDOM.findDOMNode(that);
+          if (!that.dom) {
+            return;
+          }
 
           if (_isPlainObject(theme)) {
             HighCharts$$1.setOptions(theme);
@@ -170,7 +172,7 @@ function wrapHighCharts(name, HighCharts$$1) {
 
           var method = INIT_METHOD[name];
 
-          var _chart = HighCharts$$1[method](dom, options, function() {
+          var _chart = HighCharts$$1[method](that.dom, options, function() {
             if (_isFunction(onLoad)) {
               setTimeout(function() {
                 return onLoad(_chart, HighCharts$$1);
@@ -181,7 +183,7 @@ function wrapHighCharts(name, HighCharts$$1) {
           that.setLoading(_chart, loading);
 
           if (resize && _isFunction(resize.uninstall)) {
-            resize.uninstall(dom);
+            resize.uninstall(that.dom);
           }
 
           var _resize = null;
@@ -191,7 +193,7 @@ function wrapHighCharts(name, HighCharts$$1) {
               strategy: 'scroll', // <- For ultra performance.
             });
 
-            _resize.listenTo(dom, function(element) {
+            _resize.listenTo(that.dom, function(element) {
               var width = element.offsetWidth;
               var height = element.offsetHeight;
 
@@ -219,8 +221,7 @@ function wrapHighCharts(name, HighCharts$$1) {
             resize = _that$state2.resize;
 
           if (resize && _isFunction(resize.uninstall)) {
-            var dom = ReactDOM.findDOMNode(that);
-            resize.uninstall(dom);
+            resize.uninstall(that.dom);
           }
 
           if (fnResize && _isFunction(fnResize.cancel)) {
@@ -273,6 +274,7 @@ function wrapHighCharts(name, HighCharts$$1) {
           trailing: true,
         });
 
+        _this.dom = null;
         _this.state = {
           chart: null,
           fnResize: _fnResize,
@@ -343,6 +345,9 @@ function wrapHighCharts(name, HighCharts$$1) {
             return React.createElement('div', {
               className: className,
               style: style,
+              ref: function ref(e) {
+                that.dom = e;
+              },
             });
           },
         },

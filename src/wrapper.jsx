@@ -51,6 +51,7 @@ function wrapHighCharts(name, HighCharts) {
         trailing: true,
       });
 
+      this.dom = null;
       this.state = {
         chart: null,
         fnResize,
@@ -117,14 +118,16 @@ function wrapHighCharts(name, HighCharts) {
         return;
       }
 
-      const dom = ReactDOM.findDOMNode(that);
+      if (!that.dom) {
+        return;
+      }
 
       if (_isPlainObject(theme)) {
         HighCharts.setOptions(theme);
       }
 
       const method = INIT_METHOD[name];
-      const _chart = HighCharts[method](dom, options, () => {
+      const _chart = HighCharts[method](that.dom, options, () => {
         if (_isFunction(onLoad)) {
           setTimeout(() => onLoad(_chart, HighCharts));
         }
@@ -133,7 +136,7 @@ function wrapHighCharts(name, HighCharts) {
       that.setLoading(_chart, loading);
 
       if (resize && _isFunction(resize.uninstall)) {
-        resize.uninstall(dom);
+        resize.uninstall(that.dom);
       }
 
       let _resize = null;
@@ -141,7 +144,7 @@ function wrapHighCharts(name, HighCharts) {
         _resize = ElementResizeDetector({
           strategy: 'scroll', // <- For ultra performance.
         });
-        _resize.listenTo(dom, element => {
+        _resize.listenTo(that.dom, element => {
           const width = element.offsetWidth;
           const height = element.offsetHeight;
 
@@ -165,8 +168,7 @@ function wrapHighCharts(name, HighCharts) {
       const { chart, fnResize, resize } = that.state;
 
       if (resize && _isFunction(resize.uninstall)) {
-        const dom = ReactDOM.findDOMNode(that);
-        resize.uninstall(dom);
+        resize.uninstall(that.dom);
       }
 
       if (fnResize && _isFunction(fnResize.cancel)) {
@@ -216,7 +218,15 @@ function wrapHighCharts(name, HighCharts) {
       // console.log('render');
       const { className, style } = that.props;
 
-      return <div className={className} style={style} />;
+      return (
+        <div
+          className={className}
+          style={style}
+          ref={e => {
+            that.dom = e;
+          }}
+        />
+      );
     }
   }
 
