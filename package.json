@@ -64,5 +64,5 @@
   },
   "source": "src/HighCharts.js",
   "unpkg": "dist/highcharts.min.js",
-  "version": "1.0.8"
+  "version": "2.0.0"
 }
