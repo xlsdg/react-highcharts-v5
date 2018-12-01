@@ -1,6 +1,6 @@
 {
   "author": "xLsDg <xlsdg@qq.com> (https://blog.xlsdg.org/)",
-  "browser": "dist/highcharts.js",
+  "browser": "dist/HighCharts.js",
   "bugs": {
     "url": "https://github.com/xlsdg/react-highcharts-v5/issues"
   },
@@ -36,7 +36,7 @@
     "src"
   ],
   "homepage": "https://github.com/xlsdg/react-highcharts-v5",
-  "jsdelivr": "dist/highcharts.min.js",
+  "jsdelivr": "dist/HighCharts.min.js",
   "keywords": [
     "highcharts",
     "library",
@@ -45,8 +45,8 @@
     "react-highcharts-v5"
   ],
   "license": "MIT",
-  "main": "dist/highcharts.cjs.js",
-  "module": "dist/highcharts.es.js",
+  "main": "dist/HighCharts.cjs.js",
+  "module": "dist/HighCharts.es.js",
   "name": "react-highcharts-v5",
   "peerDependencies": {
     "highcharts": "latest",
@@ -63,6 +63,6 @@
     "release:patch": "npm version patch && npm publish"
   },
   "source": "src/HighCharts.js",
-  "unpkg": "dist/highcharts.min.js",
+  "unpkg": "dist/HighCharts.min.js",
   "version": "2.0.0"
 }
