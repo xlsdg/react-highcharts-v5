@@ -1,30 +1,60 @@
-import _ from 'lodash';
+import _throttle from 'lodash-es/throttle';
+import _isString from 'lodash-es/isString';
+import _isPlainObject from 'lodash-es/isPlainObject';
+import _isFunction from 'lodash-es/isFunction';
+import _get from 'lodash-es/get';
+
 import React from 'react';
-import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
 import ElementResizeDetector from 'element-resize-detector';
 
 const INIT_METHOD = {
   charts: 'chart',
   maps: 'mapChart',
-  stock: 'stockChart'
+  stock: 'stockChart',
 };
 
 function wrapHighCharts(name, HighCharts) {
   class IHighCharts extends React.Component {
+    // static propTypes = {
+    //   className: PropTypes.string,
+    //   style: PropTypes.object,
+    //   loading: PropTypes.oneOfType([
+    //     PropTypes.string,
+    //     PropTypes.bool
+    //   ]),
+    //   theme: PropTypes.object,
+    //   resizable: PropTypes.bool,
+    //   options: PropTypes.object.isRequired,
+    //   onLoad: PropTypes.func,
+    //   onResize: PropTypes.func
+    // };
+
+    static defaultProps = {
+      className: 'react-highcharts',
+      style: {
+        width: '100%',
+        height: '100%',
+      },
+      loading: false,
+      theme: null,
+      resizable: false,
+      onLoad: () => {},
+      onResize: (w, h) => {},
+    };
+
     constructor(props) {
       // console.log('constructor', props);
       super(props);
 
-      const fnResize = _.throttle(this.resize, 250, {
+      const fnResize = _throttle(this.resize, 250, {
         leading: true,
-        trailing: true
+        trailing: true,
       });
 
       this.state = {
         chart: null,
         fnResize,
-        resize: null
+        resize: null,
       };
     }
     // componentWillMount() {
@@ -39,14 +69,10 @@ function wrapHighCharts(name, HighCharts) {
     componentWillReceiveProps(nextProps) {
       const that = this;
       // console.log('componentWillReceiveProps', that.props, nextProps);
-      const {
-        loading
-      } = that.props;
-      const {
-        chart
-      } = that.state;
+      const { loading } = that.props;
+      const { chart } = that.state;
 
-      if (!chart || (loading === nextProps.loading)) {
+      if (!chart || loading === nextProps.loading) {
         return;
       }
 
@@ -75,27 +101,17 @@ function wrapHighCharts(name, HighCharts) {
     setLoading = (chart, ing) => {
       if (ing === true) {
         chart.showLoading();
-      } else if (_.isString(ing)) {
+      } else if (_isString(ing)) {
         chart.showLoading(ing);
       } else {
         chart.hideLoading();
       }
-    }
+    };
 
     init = () => {
       const that = this;
-      const {
-        loading,
-        resizable,
-        theme,
-        options,
-        onLoad
-      } = that.props;
-      const {
-        chart,
-        resize,
-        fnResize
-      } = that.state;
+      const { loading, resizable, theme, options, onLoad } = that.props;
+      const { chart, resize, fnResize } = that.state;
 
       if (chart) {
         return;
@@ -103,36 +119,36 @@ function wrapHighCharts(name, HighCharts) {
 
       const dom = ReactDOM.findDOMNode(that);
 
-      if (_.isPlainObject(theme)) {
+      if (_isPlainObject(theme)) {
         HighCharts.setOptions(theme);
       }
 
       const method = INIT_METHOD[name];
       const _chart = HighCharts[method](dom, options, () => {
-        if (_.isFunction(onLoad)) {
+        if (_isFunction(onLoad)) {
           setTimeout(() => onLoad(_chart, HighCharts));
         }
       });
 
       that.setLoading(_chart, loading);
 
-      if (resize && _.isFunction(resize.uninstall)) {
+      if (resize && _isFunction(resize.uninstall)) {
         resize.uninstall(dom);
       }
 
       let _resize = null;
       if (resizable === true) {
         _resize = ElementResizeDetector({
-          strategy: 'scroll' // <- For ultra performance.
+          strategy: 'scroll', // <- For ultra performance.
         });
-        _resize.listenTo(dom, (element) => {
+        _resize.listenTo(dom, element => {
           const width = element.offsetWidth;
           const height = element.offsetHeight;
 
-          if (_.isFunction(fnResize)) {
+          if (_isFunction(fnResize)) {
             fnResize({
               width,
-              height
+              height,
             });
           }
         });
@@ -140,63 +156,51 @@ function wrapHighCharts(name, HighCharts) {
 
       that.setState({
         chart: _chart,
-        resize: _resize
+        resize: _resize,
       });
-    }
+    };
 
     uninit = () => {
       const that = this;
-      const {
-        chart,
-        fnResize,
-        resize
-      } = that.state;
+      const { chart, fnResize, resize } = that.state;
 
-      if (resize && _.isFunction(resize.uninstall)) {
+      if (resize && _isFunction(resize.uninstall)) {
         const dom = ReactDOM.findDOMNode(that);
         resize.uninstall(dom);
       }
 
-      if (fnResize && _.isFunction(fnResize.cancel)) {
+      if (fnResize && _isFunction(fnResize.cancel)) {
         fnResize.cancel();
       }
 
-      if (chart && _.isFunction(chart.destroy)) {
+      if (chart && _isFunction(chart.destroy)) {
         chart.destroy();
       }
-    }
+    };
 
-    resize = (opts) => {
+    resize = opts => {
       const that = this;
-      const {
-        onResize
-      } = that.props;
-      const {
-        chart
-      } = that.state;
+      const { onResize } = that.props;
+      const { chart } = that.state;
 
       if (!chart) {
         return;
       }
 
-      const width = _.get(opts, 'width');
-      const height = _.get(opts, 'height');
+      const width = _get(opts, 'width');
+      const height = _get(opts, 'height');
 
       chart.setSize(width, height);
 
-      if (_.isFunction(onResize)) {
+      if (_isFunction(onResize)) {
         onResize(width, height);
       }
-    }
+    };
 
     update = () => {
       const that = this;
-      const {
-        options
-      } = that.props;
-      const {
-        chart
-      } = that.state;
+      const { options } = that.props;
+      const { chart } = that.state;
 
       if (!chart) {
         return;
@@ -205,51 +209,16 @@ function wrapHighCharts(name, HighCharts) {
       if (options) {
         chart.update(options);
       }
-    }
+    };
 
     render() {
       const that = this;
       // console.log('render');
-      const {
-        className,
-        style
-      } = that.props;
+      const { className, style } = that.props;
 
-      return (
-        <div
-          className={className}
-          style={style}
-        />
-      );
+      return <div className={className} style={style} />;
     }
   }
-
-  IHighCharts.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    loading: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.bool
-    ]),
-    theme: PropTypes.object,
-    resizable: PropTypes.bool,
-    options: PropTypes.object.isRequired,
-    onLoad: PropTypes.func,
-    onResize: PropTypes.func
-  };
-
-  IHighCharts.defaultProps = {
-    className: 'react-highcharts',
-    style: {
-      width: '100%',
-      height: '100%'
-    },
-    loading: false,
-    theme: null,
-    resizable: false,
-    onLoad: () => {},
-    onResize: (w, h) => {}
-  };
 
   return IHighCharts;
 }

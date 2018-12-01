@@ -44,13 +44,15 @@ $ npm install --save highcharts react-highcharts-v5
     ```javascript
     import IHighCharts from 'react-highcharts-v5/src/HighCharts.js';
 
-    const options = {};
+    export default () => {
+      const options = {};
 
-    return (
-      <IHighCharts
-        options={options}
-      />
-    );
+      return (
+        <IHighCharts
+          options={options}
+        />
+      );
+    };
     ```
 
 2. Import HighMaps
@@ -58,13 +60,15 @@ $ npm install --save highcharts react-highcharts-v5
     ```javascript
     import IHighCharts from 'react-highcharts-v5/src/HighMaps.js';
 
-    const options = {};
+    export default () => {
+      const options = {};
 
-    return (
-      <IHighCharts
-        options={options}
-      />
-    );
+      return (
+        <IHighCharts
+          options={options}
+        />
+      );
+    };
     ```
 
 3. Import HighStock
@@ -72,13 +76,15 @@ $ npm install --save highcharts react-highcharts-v5
     ```javascript
     import IHighCharts from 'react-highcharts-v5/src/HighStock.js';
 
-    const options = {};
+    export default () => {
+      const options = {};
 
-    return (
-      <IHighCharts
-        options={options}
-      />
-    );
+      return (
+        <IHighCharts
+          options={options}
+        />
+      );
+    };
     ```
 
 ## propTypes
